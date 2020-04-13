@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: toodo
+spec:
+  replicas: 1
+  template:
+    spec:
+      initContainers:
+      - name: postgres-ready
+        image: postgres
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: toodo-secrets
+              key: DATABASE_URL
+        command: ["/bin/sh", "-c"]
+        args: ["until psql -Atx \"$DATABASE_URL\" -c \"select 1\" > /dev/null 2>&1; do echo 'Waiting for postgres server to be ready...'; sleep 3; done"]
+      containers:
+      - name: toodo
+        image: gobuffalo/toodo
+        ports:
+        - name: http
+          containerPort: 3000
+        env:
+        - name: GO_ENV
+          value: example
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: toodo-secrets
+              key: DATABASE_URL

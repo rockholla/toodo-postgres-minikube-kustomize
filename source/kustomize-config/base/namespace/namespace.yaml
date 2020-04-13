@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: toodo
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: toodo-limits
+  namespace: todoo
+spec:
+  limits:
+    - type: Container
+      defaultRequest:
+        cpu: "10m"
+        memory: "64Mi"
+      default:
+        cpu: "2"
+        memory: "2Gi"

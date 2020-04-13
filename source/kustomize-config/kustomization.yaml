@@ -1,0 +1,15 @@
+images:
+- name: postgres
+  newName: localhost:5000/postgres
+  newTag: "12.2"
+- name: gobuffalo/toodo
+  newName: localhost:5000/gobuffalo/toodo
+  newTag: example
+namespace: toodo
+resources:
+- base/namespace
+- base/postgres
+- base/app
+patchesStrategicMerge:
+- app-secrets.patch.yaml
+- postgres-configmap.patch.yaml

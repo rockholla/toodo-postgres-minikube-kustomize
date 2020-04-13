@@ -1,0 +1,9 @@
+configurations:
+- kustomizeconfig.yaml
+commonLabels:
+  app: postgres
+resources:
+- pvc.yaml
+- configmap.yaml
+- statefulset.yaml
+- service.yaml
